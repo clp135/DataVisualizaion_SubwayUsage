@@ -37,7 +37,7 @@ button {
 }
 
 .page-header {
-  width: min(620px, calc(100% - 380px));
+  width: min(800px, calc(100% - 380px));
   min-height: 96px;
 }
 
