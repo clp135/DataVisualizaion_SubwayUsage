@@ -486,7 +486,7 @@ h3 {
 
 .bar-value {
   position: absolute;        /* ✅ 변경: 레이아웃 공간을 차지하지 않도록 절대 좌표 적용 */
-  top: 0;                    /* ✅ 추가: 최상단 정렬 */
+  top: -25px;                    /* ✅ 추가: 최상단 정렬 */
   left: 50%;                 /* ✅ 추가: 가운데 정렬 시작 */
   transform: translateX(-50%); /* ✅ 추가: 좌우 완벽한 중앙 정렬 매칭 */
   color: #1f2b24;
@@ -494,6 +494,8 @@ h3 {
   font-weight: 800;
   white-space: nowrap;
 }
+
+
 
 .bar-stack {
   display: flex;
@@ -517,6 +519,10 @@ h3 {
 }
 
 .bar-label {
+  position: absolute;
+  left: 50%;            /* 부모의 정중앙으로 시작점을 이동 */
+  transform: translateX(-50%); /* 글자 자체 너비의 반만큼 왼쪽으로 이동 */
+  bottom: 35px;
   color: #66746b;
   font-size: 0.74rem;
   font-weight: 800;
