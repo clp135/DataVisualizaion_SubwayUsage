@@ -79,10 +79,9 @@ export default function App() {
   );
 
   const hourlySeries = useMemo(
-    () => getHourlyFlowSeries(loadState.rows, filters),
-    [loadState.rows, filters],
+  () => getHourlyFlowSeries(loadState.rows, filters, selectedStations[0]), // 👈 selectedStations[0] 추가
+  [loadState.rows, filters, selectedStations], // 👈 디펜던시에 selectedStations 추가
   );
-
   const topStations = useMemo(
     () => getTopStations(filteredRows, 3),
     [filteredRows],

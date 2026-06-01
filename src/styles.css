@@ -476,6 +476,7 @@ h3 {
 }
 
 .bar-column {
+  position: relative;        /* ✅ 추가: 텍스트의 기준점이 되도록 설정 */
   display: grid;
   grid-template-rows: 26px 190px 22px;
   gap: 5px;
@@ -484,6 +485,10 @@ h3 {
 }
 
 .bar-value {
+  position: absolute;        /* ✅ 변경: 레이아웃 공간을 차지하지 않도록 절대 좌표 적용 */
+  top: 0;                    /* ✅ 추가: 최상단 정렬 */
+  left: 50%;                 /* ✅ 추가: 가운데 정렬 시작 */
+  transform: translateX(-50%); /* ✅ 추가: 좌우 완벽한 중앙 정렬 매칭 */
   color: #1f2b24;
   font-size: 0.72rem;
   font-weight: 800;

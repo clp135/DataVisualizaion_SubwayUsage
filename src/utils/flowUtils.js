@@ -237,12 +237,24 @@ export function getStationFlowSummary(rows, stationName) {
   };
 }
 
-export function getHourlyFlowSeries(rows, filters) {
+export function getHourlyFlowSeries(rows, filters, stationName) {
   const hourlyTotals = new Map(Array.from({ length: 24 }, (_, hour) => [hour, 0]));
+
+  // ✅ 1. 역이 선택되지 않았다면? 연산 자체를 하지 않고 바로 0명짜리 배열 리턴 (초기 로딩 속도 최적화)
+  if (!stationName) {
+    return [...hourlyTotals.entries()].map(([hour, passengerCount]) => ({
+      hour,
+      total: passengerCount,
+    }));
+  }
+
+  // 2. 역이 선택된 경우에만 무거운 필터링 및 루프 작동
   const rowsWithoutHourFilter = filterRows(rows, filters, { includeHour: false });
 
   for (const row of rowsWithoutHourFilter) {
-    addToMap(hourlyTotals, row.hour, row.passengerCount);
+    if (row.originStation === stationName || row.destinationStation === stationName) {
+      addToMap(hourlyTotals, row.hour, row.passengerCount);
+    }
   }
 
   return [...hourlyTotals.entries()].map(([hour, passengerCount]) => ({
