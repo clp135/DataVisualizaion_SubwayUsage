@@ -17,11 +17,18 @@ export const subwayCsvFiles = Array.from({ length: 31 }, (_, index) => {
   return `지하철_2호선_순환선_OD_통계_202505${day}.csv`;
 });
 
+function cleanStationName(name) {
+  if (!name) return '';
+  // '(' 문자를 기준으로 문자열을 자르고, 앞부분만 가져온 뒤 양옆 공백 제거
+  return name.split('(')[0].trim();
+}
+
 export function adaptSubwayRow(row) {
   return {
     date: String(row[CSV_COLUMNS.date]),
-    originStation: row[CSV_COLUMNS.originStation],
-    destinationStation: row[CSV_COLUMNS.destinationStation],
+    // ✅ 2. 승하차 역 이름 데이터 정제 적용
+    originStation: cleanStationName(row[CSV_COLUMNS.originStation]),
+    destinationStation: cleanStationName(row[CSV_COLUMNS.destinationStation]),
     hour: Number(row[CSV_COLUMNS.hour]),
     passengerCount: Number(row[CSV_COLUMNS.passengerCount]),
   };

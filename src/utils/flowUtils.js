@@ -331,3 +331,51 @@ export function formatPassengerCount(value) {
 export function formatRatio(value) {
   return `${(value * 100).toFixed(1)}%`;
 }
+
+// ✅ 맨 아래에 이 함수를 추가합니다.
+export function getCircleTrafficSeries(rows) {
+  const N = LINE_2_STATION_ORDER.length; // 43 (중복 제거된 본선 역 개수)
+  const innerSegments = new Array(N).fill(0); // 내선 (시계 방향 누적)
+  const outerSegments = new Array(N).fill(0); // 외선 (반시계 방향 누적)
+
+  // 1. 최단 경로 탐색 기반 구간 유동량 누적 연산
+  for (const row of rows) {
+    const idxO = LINE_2_STATION_ORDER.indexOf(row.originStation);
+    const idxD = LINE_2_STATION_ORDER.indexOf(row.destinationStation);
+
+    if (idxO === -1 || idxD === -1 || idxO === idxD) continue;
+
+    const distClockwise = (idxD - idxO + N) % N;
+    const distCounterClockwise = (idxO - idxD + N) % N;
+
+    if (distClockwise < distCounterClockwise) {
+      // [내선순환] index 증가 방향으로 순회하며 구간 누적
+      for (let step = 0; step < distClockwise; step++) {
+        const segIdx = (idxO + step) % N;
+        innerSegments[segIdx] += row.passengerCount;
+      }
+    } else {
+      // [외선순환] index 감소 방향으로 순회하며 구간 누적
+      for (let step = 0; step < distCounterClockwise; step++) {
+        const curr = (idxO - step + N) % N;
+        const prev = (curr - 1 + N) % N;
+        outerSegments[prev] += row.passengerCount;
+      }
+    }
+  }
+
+  // Y축 스케일링을 위한 최댓값 추출 (0 나누기 방지용 최소 1)
+  const maxVal = Math.max(1, ...innerSegments, ...outerSegments);
+
+  // 2. 일자로 펼쳐진 44개 역(LINE_2_MAIN_STATIONS) 좌표에 맞게 데이터 리매핑
+  const series = LINE_2_MAIN_STATIONS.map((station, index) => {
+    // 내선: 해당 역에서 출발하는 구간 유동량 매핑 (마지막 역은 직전 구간 값 복사)
+    const inner = index < N ? innerSegments[index] : innerSegments[N - 1];
+    // 외선: 이전 역에서 나에게로 들어오는 구간 유동량 매핑 (첫 역은 0번 구간 값 복사)
+    const outer = index > 0 ? outerSegments[index - 1] : outerSegments[0];
+    
+    return { station, inner, outer };
+  });
+
+  return { series, maxVal };
+}

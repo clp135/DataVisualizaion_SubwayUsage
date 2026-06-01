@@ -15,6 +15,7 @@ import {
   getTopStations,
   getTwoStationStackedSeries,
   swapSelectedStations,
+  getCircleTrafficSeries,
 } from './utils/flowUtils.js';
 
 const DEFAULT_FILTERS = {
@@ -128,6 +129,11 @@ export default function App() {
   const hasSelectedStation = selectedStations.length > 0;
   const hasTwoStations = selectedStations.length === 2;
 
+  const circleTraffic = useMemo(
+    () => getCircleTrafficSeries(filteredRows),
+    [filteredRows],
+  );
+
   return (
     <main className="app-shell">
       <header className="page-header">
@@ -169,6 +175,7 @@ export default function App() {
               stations={lineMapStations}
               selectedStations={selectedStations}
               onStationClick={handleStationClick}
+              circleTraffic={circleTraffic}
             />
           </section>
 
