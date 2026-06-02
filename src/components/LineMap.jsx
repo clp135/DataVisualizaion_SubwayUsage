@@ -22,7 +22,7 @@ export default function LineMap({ stationBriefs, stations, selectedStations, onS
       <div className="line-map-header">
         <span>Line 2</span>
         <div className="line-flow-legend" aria-label="교통 흐름 범례">
-          <span>Overall Flow Chart over Stations</span>
+          <span>Subway Traffic Flow by Direction</span>
           <span className="flow-legend-item">
             <i className="flow-legend-swatch is-inner" />
             내선 →
