@@ -35,13 +35,13 @@ export default function LineMap({ stationBriefs, stations, selectedStations, onS
       </div>
 
       <div className="line-map" role="group" aria-label="2호선 역 선택 라인맵">
-        
+
         {/* ✅ 추가: 구간 유동량 꺾은선/영역 그래프 SVG 오버레이 */}
         {series.length > 0 && (
           <svg
             style={{
               position: 'absolute',
-              top: 0,
+              top: '-5px',
               left: 0,
               width: '100%',
               height: '100%',
