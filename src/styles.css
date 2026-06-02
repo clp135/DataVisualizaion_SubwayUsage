@@ -310,6 +310,8 @@ h3 {
 
 .line-map-header {
   display: flex;
+  align-items: center;
+  gap: 16px;
   justify-content: space-between;
   width: min(100%, 1440px);
   margin: 0 auto 10px;
@@ -320,6 +322,43 @@ h3 {
 
 .line-map-header span {
   color: #16834d;
+}
+
+.line-flow-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  color: #526159;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.flow-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.line-map-header .flow-legend-item {
+  color: #526159;
+}
+
+.flow-legend-swatch {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 4px;
+  border-radius: 999px;
+}
+
+.flow-legend-swatch.is-inner {
+  background: #16834d;
+}
+
+.flow-legend-swatch.is-outer {
+  background: #d17b31;
 }
 
 .line-map {
@@ -631,6 +670,17 @@ h3 {
 @media (max-width: 640px) {
   .app-shell {
     padding: 230px 14px 36px;
+  }
+
+  .line-map-header {
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  .line-flow-legend {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .top-stations-center {

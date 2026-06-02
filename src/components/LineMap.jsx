@@ -21,6 +21,16 @@ export default function LineMap({ stationBriefs, stations, selectedStations, onS
     <section className="line-map-section" aria-label="2호선 가로 라인맵">
       <div className="line-map-header">
         <span>Line 2</span>
+        <div className="line-flow-legend" aria-label="교통 흐름 범례">
+          <span className="flow-legend-item">
+            <i className="flow-legend-swatch is-inner" />
+            내선 →
+          </span>
+          <span className="flow-legend-item">
+            <i className="flow-legend-swatch is-outer" />
+            외선 ←
+          </span>
+        </div>
         <strong>{selectedStations.length}/2개 역 선택</strong>
       </div>
 
