@@ -52,12 +52,12 @@ export default function LineMap({ stationBriefs, stations, selectedStations, onS
             preserveAspectRatio="none" // 반응형 가로 늘림 처리
           >
             {/* 내선 순환: 초록색 계열 은은한 채우기 및 진한 선 */}
-            <path d={innerAreaPath} fill="rgba(22, 131, 77, 0.08)" />
-            <path d={innerLinePath} fill="none" stroke="#16834d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d={innerAreaPath} fill="rgba(37, 99, 235, 0.08)" />
+            <path d={innerLinePath} fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 
             {/* 외선 순환: 주황색 계열 은은한 채우기 및 진한 선 */}
-            <path d={outerAreaPath} fill="rgba(209, 123, 49, 0.08)" />
-            <path d={outerLinePath} fill="none" stroke="#d17b31" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d={outerAreaPath} fill="rgba(190, 24, 93, 0.08)" />
+            <path d={outerLinePath} fill="none" stroke="#be185d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
 
