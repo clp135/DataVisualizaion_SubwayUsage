@@ -1,9 +1,9 @@
 import { formatPassengerCount } from '../utils/flowUtils.js';
 
 const STACK_KEYS = [
-  { key: 'direct', label: '선택 출발역 → 선택 도착역', color: '#1d8f58' },
-  { key: 'beforeToDestination', label: '선택 출발역 이전 역들 → 선택 도착역', color: '#4f8cc9' },
-  { key: 'originToAfter', label: '선택 출발역 → 선택 도착역 이후 역들', color: '#d17b31' },
+  { key: 'direct', color: '#1d8f58' },
+  { key: 'beforeToDestination', color: '#4f8cc9' },
+  { key: 'originToAfter', color: '#d17b31' },
 ];
 
 function getMaxValue(mode, series) {
@@ -17,7 +17,16 @@ function getMaxValue(mode, series) {
   return Math.max(1, ...series.map((item) => item.total));
 }
 
-export default function FlowChart({ description, mode, selectedHour, series, title }) {
+export default function FlowChart({
+  actionLabel,
+  description,
+  mode,
+  onAction,
+  selectedHour,
+  series,
+  stackLabels = {},
+  title,
+}) {
   const maxValue = getMaxValue(mode, series);
 
   return (
@@ -27,13 +36,17 @@ export default function FlowChart({ description, mode, selectedHour, series, tit
           <p className="eyebrow">Flow Chart</p>
           <h2>{title}</h2>
         </div>
+        {onAction && actionLabel && (
+          <button className="ghost-button" type="button" onClick={onAction}>
+            {actionLabel}
+          </button>
+        )}
       </div>
       <p className="chart-description">{description}</p>
 
       <div className="bar-chart" role="img" aria-label={title}>
         {series.map((item) => {
           const isSelected = item.hour === Number(selectedHour);
-          // stacked 모드에서는 세 범주의 합계를 기준으로 선택 시간 tooltip 값을 표시합니다.
           const total =
             mode === 'stacked'
               ? item.direct + item.beforeToDestination + item.originToAfter
@@ -73,7 +86,7 @@ export default function FlowChart({ description, mode, selectedHour, series, tit
           {STACK_KEYS.map((stack) => (
             <span key={stack.key}>
               <i style={{ background: stack.color }} />
-              {stack.label}
+              {stackLabels[stack.key]}
             </span>
           ))}
         </div>

@@ -232,8 +232,8 @@ export function getStationFlowSummary(rows, stationName) {
     stationName,
     outboundTotal,
     inboundTotal,
-    topDestinations: toSortedEntries(destinations, outboundTotal).slice(0, 5),
-    topOrigins: toSortedEntries(origins, inboundTotal).slice(0, 5),
+    topDestinations: toSortedEntries(destinations, outboundTotal).slice(0, 3),
+    topOrigins: toSortedEntries(origins, inboundTotal).slice(0, 3),
   };
 }
 

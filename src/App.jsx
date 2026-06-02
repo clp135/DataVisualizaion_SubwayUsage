@@ -104,6 +104,20 @@ export default function App() {
     [loadState.rows, filters, stations, selectedStations],
   );
 
+  const odStackLabels = useMemo(() => {
+    const [originStation, destinationStation] = selectedStations;
+
+    if (!originStation || !destinationStation) {
+      return {};
+    }
+
+    return {
+      direct: `${originStation} 탑승 -> ${destinationStation} 하차`,
+      beforeToDestination: `${originStation} 이전 역 탑승 -> ${destinationStation} 하차`,
+      originToAfter: `${originStation} 탑승 -> ${destinationStation} 이후 역 하차`,
+    };
+  }, [selectedStations]);
+
   function handleStationClick(stationName) {
     setSelectedStations((current) => {
       // 이미 선택된 역을 다시 누르면 선택 해제합니다.
@@ -179,19 +193,23 @@ export default function App() {
           </section>
 
           {hasSelectedStation && (
-            <section className="dashboard-grid detail-grid">
-              <StationInfoPanel
-                selectedStations={selectedStations}
-                summary={stationSummary}
-                onSwapDirection={handleSwapDirection}
-              />
+            <section className={`dashboard-grid detail-grid ${hasTwoStations ? 'is-chart-only' : ''}`}>
+              {!hasTwoStations && (
+                <StationInfoPanel
+                  selectedStations={selectedStations}
+                  summary={stationSummary}
+                />
+              )}
               {hasTwoStations ? (
                 <FlowChart
                   mode="stacked"
                   title="선택 OD 시간대별 이동량"
                   description={`${selectedStations[0]} → ${selectedStations[1]} 기준`}
+                  actionLabel="방향 뒤집기"
+                  onAction={handleSwapDirection}
                   selectedHour={filters.hour}
                   series={odSeries}
+                  stackLabels={odStackLabels}
                 />
               ) : (
                 <FlowChart

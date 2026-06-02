@@ -456,6 +456,10 @@ h3 {
   margin-top: 24px;
 }
 
+.dashboard-grid.is-chart-only {
+  grid-template-columns: 1fr;
+}
+
 .detail-grid {
   position: relative;
   z-index: 15;
