@@ -157,6 +157,7 @@ export function getTopStations(rows, limit = 3) {
     const destinationStats = ensureStats(row.destinationStation);
 
     originStats.passengerCount += row.passengerCount;
+    destinationStats.passengerCount += row.passengerCount;
     originStats.outboundTotal += row.passengerCount;
     destinationStats.inboundTotal += row.passengerCount;
 

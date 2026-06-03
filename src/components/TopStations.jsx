@@ -16,7 +16,7 @@ export default function TopStations({ stations }) {
       <div className="section-heading compact">
         <div>
           <p className="eyebrow">Top 3</p>
-          <h2>승차 유동량 상위 역</h2>
+          <h2>승하차 유동량 상위 역</h2>
         </div>
       </div>
 
