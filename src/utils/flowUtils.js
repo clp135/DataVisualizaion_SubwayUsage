@@ -258,23 +258,81 @@ export function getHourlyFlowSeries(rows, filters, stationName) {
 }
 
 function getStationSlice(stations, startStation, endStation, mode) {
-  const startIndex = stations.indexOf(startStation);
-  const endIndex = stations.indexOf(endStation);
+  // 순환선 기준 배열(43개 역)에서 정확한 위치를 찾습니다.
+  const N = LINE_2_STATION_ORDER.length; // 43
+  const startIndex = LINE_2_STATION_ORDER.indexOf(startStation);
+  const endIndex = LINE_2_STATION_ORDER.indexOf(endStation);
 
-  if (startIndex === -1 || endIndex === -1) {
+  if (startIndex === -1 || endIndex === -1 || startIndex === endIndex) {
     return [];
   }
 
-  // TODO: 순환선의 양방향 최단 경로가 아니라 배열상 직선 순서 기반의 프로토타입 계산입니다.
-  if (mode === 'beforeOrigin') {
-    return stations.slice(0, startIndex);
+  // 1. 시계 방향(내선) 및 반시계 방향(외선) 거리 계산
+  const distClockwise = (endIndex - startIndex + N) % N;
+  const distCounterClockwise = (startIndex - endIndex + N) % N;
+
+  // 2. 22칸 이상 떨어져 있거나 반대 방향이 더 가까우면, 
+  // 사용자가 선택한 정방향(일단 시계방향 기준이라 가정) 경로가 최단 경로가 아니므로 빈 배열 리턴 or 예외 처리
+  // 여기서는 '시계 방향이 최단 경로일 때'를 기준으로 이웃 역들을 정의합니다.
+  const isClockwiseShortest = distClockwise <= distCounterClockwise;
+  const shortestDist = isClockwiseShortest ? distClockwise : distCounterClockwise;
+
+  // 절반(21.5칸 -> 22칸) 이상 떨어지면 반대쪽이 더 가까우므로 제외
+  if (shortestDist > Math.floor(N / 2)) {
+    return []; 
   }
 
-  if (mode === 'afterDestination') {
-    return stations.slice(endIndex + 1);
+  const result = [];
+
+  if (isClockwiseShortest) {
+    // -------------------------------------------------------------
+    // [시계 방향이 최단 경로일 때] 
+    // 출발역 -> ... -> 도착역 방향으로 이동 중
+    // -------------------------------------------------------------
+    if (mode === 'beforeOrigin') {
+      // 출발역 바로 이전의 'N'개 역을 수집 (예: 5개 역까지 보고 싶다면 스텝 조절 가능, 여기서는 임의로 5개 예시)
+      // 만약 출발역 이전의 모든 역을 원하면 최단경로 방해 안되는 선(반대편 절반)까지 수집합니다.
+      const maxSteps = Math.floor(N / 2) - shortestDist; 
+      for (let i = 1; i <= maxSteps; i++) {
+        const idx = (startIndex - i + N) % N;
+        result.push(LINE_2_STATION_ORDER[idx]);
+      }
+    }
+
+    if (mode === 'afterDestination') {
+      // 도착역 바로 이후의 역들을 최단경로를 침범하지 않는 선까지 수집
+      const maxSteps = Math.floor(N / 2) - shortestDist;
+      for (let i = 1; i <= maxSteps; i++) {
+        const idx = (endIndex + i) % N;
+        result.push(LINE_2_STATION_ORDER[idx]);
+      }
+    }
+  } else {
+    // -------------------------------------------------------------
+    // [반시계 방향이 최단 경로일 때] 
+    // 출발역 -> ... -> 도착역 반대 방향으로 이동 중
+    // -------------------------------------------------------------
+    if (mode === 'beforeOrigin') {
+      // 반시계 방향 기준 '출발역 이전'은 인덱스가 증가하는 방향입니다.
+      const maxSteps = Math.floor(N / 2) - shortestDist;
+      for (let i = 1; i <= maxSteps; i++) {
+        const idx = (startIndex + i) % N;
+        result.push(LINE_2_STATION_ORDER[idx]);
+      }
+    }
+
+    if (mode === 'afterDestination') {
+      // 반시계 방향 기준 '도착역 이후'는 인덱스가 감소하는 방향입니다.
+      const maxSteps = Math.floor(
+        N / 2) - shortestDist;
+      for (let i = 1; i <= maxSteps; i++) {
+        const idx = (endIndex - i + N) % N;
+        result.push(LINE_2_STATION_ORDER[idx]);
+      }
+    }
   }
 
-  return [];
+  return result;
 }
 
 export function getTwoStationStackedSeries({
