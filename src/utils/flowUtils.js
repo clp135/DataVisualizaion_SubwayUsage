@@ -252,10 +252,9 @@ export function getHourlyFlowSeries(rows, filters, stationName) {
   const rowsWithoutHourFilter = filterRows(rows, filters, { includeHour: false });
 
   for (const row of rowsWithoutHourFilter) {
-    if (!(row.originStation === row.destinationStation))
-      if (row.originStation === stationName || row.destinationStation === stationName) {
-        addToMap(hourlyTotals, row.hour, row.passengerCount);
-      }
+    if (row.originStation === stationName || row.destinationStation === stationName) {
+      addToMap(hourlyTotals, row.hour, row.passengerCount);
+    }
   }
 
   return [...hourlyTotals.entries()].map(([hour, passengerCount]) => ({
