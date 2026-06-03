@@ -215,7 +215,7 @@ export default function App() {
                 <FlowChart
                   mode="total"
                   title="전체 시간대별 유동량"
-                  description={`${selectedStations[0]} 선택 상태에서 24시간 흐름을 확인합니다.`}
+                  description={`${selectedStations[0]}에서의 시간별 승차&하차 인원의 합계를 확인합니다.`}
                   selectedHour={filters.hour}
                   series={hourlySeries}
                 />

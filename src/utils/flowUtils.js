@@ -108,7 +108,7 @@ function passesSelectedDays(row, filters) {
 
 export function filterRows(rows, filters, options = { includeHour: true }) {
   return rows.filter((row) => {
-    const hourMatches = !options.includeHour || row.hour === Number(filters.hour);
+    const hourMatches = (!options.includeHour || row.hour === Number(filters.hour)) && !(row.originStation === row.destinationStation);
     return hourMatches && passesDayType(row, filters) && passesSelectedDays(row, filters);
   });
 }
@@ -252,9 +252,10 @@ export function getHourlyFlowSeries(rows, filters, stationName) {
   const rowsWithoutHourFilter = filterRows(rows, filters, { includeHour: false });
 
   for (const row of rowsWithoutHourFilter) {
-    if (row.originStation === stationName || row.destinationStation === stationName) {
-      addToMap(hourlyTotals, row.hour, row.passengerCount);
-    }
+    if (!(row.originStation === row.destinationStation))
+      if (row.originStation === stationName || row.destinationStation === stationName) {
+        addToMap(hourlyTotals, row.hour, row.passengerCount);
+      }
   }
 
   return [...hourlyTotals.entries()].map(([hour, passengerCount]) => ({
