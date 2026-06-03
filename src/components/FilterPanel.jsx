@@ -3,8 +3,7 @@ import { WEEKDAY_LABELS } from '../utils/flowUtils.js';
 const DAY_TYPE_OPTIONS = [
   { value: 'all', label: '전체' },
   { value: 'weekday', label: '평일' },
-  { value: 'weekend', label: '주말' },
-  { value: 'holiday', label: '공휴일' },
+  { value: 'weekend', label: '주말&공휴일' },
 ];
 
 export default function FilterPanel({ filters, onChange }) {
@@ -18,13 +17,11 @@ export default function FilterPanel({ filters, onChange }) {
       all: [1, 2, 3, 4, 5, 6, 0],
       weekday: [1, 2, 3, 4, 5],
       weekend: [6, 0],
-      holiday: [1, 2, 3, 4, 5, 6, 0],
     };
 
     updateFilters({
       dayType,
       selectedDays: dayPresets[dayType],
-      includeHolidays: dayType === 'holiday' ? true : filters.includeHolidays,
     });
   }
 
@@ -69,15 +66,6 @@ export default function FilterPanel({ filters, onChange }) {
           ))}
         </div>
       </div>
-
-      <label className="holiday-toggle">
-        <input
-          checked={filters.includeHolidays}
-          type="checkbox"
-          onChange={(event) => updateFilters({ includeHolidays: event.target.checked })}
-        />
-        공휴일 포함
-      </label>
 
       <label className="hour-filter">
         <span className="filter-label">시간</span>

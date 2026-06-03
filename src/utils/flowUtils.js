@@ -79,20 +79,13 @@ function isWeekend(dateText) {
 }
 
 function passesDayType(row, filters) {
-  if (filters.includeHolidays && FALLBACK_HOLIDAYS.has(row.date)) {
-    return true;
-  }
 
   if (filters.dayType === 'weekday') {
     return !isWeekend(row.date) && !FALLBACK_HOLIDAYS.has(row.date);
   }
 
   if (filters.dayType === 'weekend') {
-    return isWeekend(row.date);
-  }
-
-  if (filters.dayType === 'holiday') {
-    return FALLBACK_HOLIDAYS.has(row.date);
+    return isWeekend(row.date) || FALLBACK_HOLIDAYS.has(row.date);;
   }
 
   return true;
