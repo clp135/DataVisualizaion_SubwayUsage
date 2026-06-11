@@ -1,11 +1,11 @@
 export const WEEKDAY_LABELS = [
-  { value: 1, label: '월' },
-  { value: 2, label: '화' },
-  { value: 3, label: '수' },
-  { value: 4, label: '목' },
-  { value: 5, label: '금' },
-  { value: 6, label: '토' },
-  { value: 0, label: '일' },
+  { value: 1, label: 'Mon' },
+  { value: 2, label: 'Tue' },
+  { value: 3, label: 'Wed' },
+  { value: 4, label: 'Thu' },
+  { value: 5, label: 'Fri' },
+  { value: 6, label: 'Sat' },
+  { value: 0, label: 'Sun' },
 ];
 
 // 2호선 순환선 본선 순서입니다.
@@ -389,7 +389,7 @@ export function swapSelectedStations(selectedStations) {
 }
 
 export function formatPassengerCount(value) {
-  return `${numberFormatter.format(Math.round(value))}명`;
+  return `${numberFormatter.format(Math.round(value))}`;
 }
 
 export function formatRatio(value) {

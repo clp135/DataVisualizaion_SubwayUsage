@@ -1,9 +1,9 @@
 import { WEEKDAY_LABELS } from '../utils/flowUtils.js';
 
 const DAY_TYPE_OPTIONS = [
-  { value: 'all', label: '전체' },
-  { value: 'weekday', label: '평일' },
-  { value: 'weekend', label: '주말&공휴일' },
+  { value: 'all', label: 'All' },
+  { value: 'weekday', label: 'Weekdays' },
+  { value: 'weekend', label: 'Weekends & Holidays' },
 ];
 
 export default function FilterPanel({ filters, onChange }) {
@@ -36,7 +36,7 @@ export default function FilterPanel({ filters, onChange }) {
   return (
     <section className="filter-panel" aria-label="데이터 필터">
       <div className="filter-group">
-        <span className="filter-label">요일</span>
+        <span className="filter-label">Day</span>
         <div className="chip-row">
           {WEEKDAY_LABELS.map((day) => (
             <button
@@ -52,7 +52,7 @@ export default function FilterPanel({ filters, onChange }) {
       </div>
 
       <div className="filter-group">
-        <span className="filter-label">구분</span>
+        <span className="filter-label">Type</span>
         <div className="segmented-control">
           {DAY_TYPE_OPTIONS.map((option) => (
             <button
@@ -68,14 +68,14 @@ export default function FilterPanel({ filters, onChange }) {
       </div>
 
       <label className="hour-filter">
-        <span className="filter-label">시간</span>
+        <span className="filter-label">Hour</span>
         <select
           value={filters.hour}
           onChange={(event) => updateFilters({ hour: Number(event.target.value) })}
         >
           {Array.from({ length: 24 }, (_, hour) => (
             <option key={hour} value={hour}>
-              {String(hour).padStart(2, '0')}시
+              {String(hour).padStart(2, '0')}:00
             </option>
           ))}
         </select>

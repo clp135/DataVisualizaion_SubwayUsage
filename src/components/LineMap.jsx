@@ -25,14 +25,14 @@ export default function LineMap({ stationBriefs, stations, selectedStations, onS
           <span>Subway Traffic Flow by Direction</span>
           <span className="flow-legend-item">
             <i className="flow-legend-swatch is-inner" />
-            내선 →
+            Inner →
           </span>
           <span className="flow-legend-item">
             <i className="flow-legend-swatch is-outer" />
-            외선 ←
+            Outer ←
           </span>
         </div>
-        <strong>{selectedStations.length}/2개 역 선택</strong>
+        <strong>{selectedStations.length}/2 Stations Selected</strong>
       </div>
 
       <div className="line-map" role="group" aria-label="2호선 역 선택 라인맵">

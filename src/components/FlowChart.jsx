@@ -46,7 +46,7 @@ export default function FlowChart({
     <section className="panel chart-panel">
       <div className="section-heading compact">
         <div>
-          <p className="eyebrow">Flow Chart</p>
+          <p className="eyebrow">Chart</p>
           <h2>{title}</h2>
         </div>
         {onAction && actionLabel && (

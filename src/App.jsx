@@ -112,9 +112,9 @@ export default function App() {
     }
 
     return {
-      direct: `${originStation} 탑승 -> ${destinationStation} 하차`,
-      beforeToDestination: `${originStation} 이전 역 탑승 -> ${destinationStation} 하차`,
-      originToAfter: `${originStation} 탑승 -> ${destinationStation} 이후 역 하차`,
+      direct: `${originStation} -> ${destinationStation}`,
+      beforeToDestination: `Before ${originStation} -> ${destinationStation}`,
+      originToAfter: `${originStation} -> After ${destinationStation}`,
     };
   }, [selectedStations]);
 
@@ -151,13 +151,13 @@ export default function App() {
     <main className="app-shell">
       <header className="page-header">
         <div>
-          <p className="eyebrow">서울 지하철 2호선 순환선 OD 통계</p>
-          <h1>2호선 유동량 대시보드</h1>
+          <p className="eyebrow">Origin-Destination Statistics for Seoul Subway Line 2 (Circle Line)</p>
+          <h1>Line 2 Passenger Flow Dashboard</h1>
         </div>
         {loadState.summary && (
           <p className="dataset-note">
-            {loadState.summary.dateRange} · CSV {loadState.summary.fileCount}개 ·{' '}
-            {loadState.summary.rowCount.toLocaleString('ko-KR')}행
+            {loadState.summary.dateRange} · {loadState.summary.fileCount} CSVs ·{' '}
+            {loadState.summary.rowCount.toLocaleString('ko-KR')} Rows
           </p>
         )}
       </header>
@@ -167,12 +167,12 @@ export default function App() {
       </div>
 
       {loadState.status === 'loading' && (
-        <p className="status-message">데이터를 불러오는 중입니다.</p>
+        <p className="status-message">loading...</p>
       )}
 
       {loadState.status === 'error' && (
         <p className="status-message error">
-          데이터를 불러오지 못했습니다: {loadState.error.message}
+          loding failed: {loadState.error.message}
         </p>
       )}
 
@@ -203,9 +203,9 @@ export default function App() {
               {hasTwoStations ? (
                 <FlowChart
                   mode="stacked"
-                  title="선택 OD 시간대별 이동량"
-                  description={`${selectedStations[0]} → ${selectedStations[1]} 기준`}
-                  actionLabel="방향 뒤집기"
+                  title="Hourly Traffic for Selected Pair"
+                  description={`${selectedStations[0]} → ${selectedStations[1]}`}
+                  actionLabel="Reverse Direction"
                   onAction={handleSwapDirection}
                   selectedHour={filters.hour}
                   series={odSeries}
@@ -214,8 +214,8 @@ export default function App() {
               ) : (
                 <FlowChart
                   mode="total"
-                  title="전체 시간대별 유동량"
-                  description={`${selectedStations[0]}에서의 시간별 승차&하차 인원의 합계를 확인합니다.`}
+                  title="Hourly Passenger Volume"
+                  description={`Hourly total of boardings and alightings for ${selectedStations[0]} Station.`}
                   selectedHour={filters.hour}
                   series={hourlySeries}
                 />

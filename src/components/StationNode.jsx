@@ -17,8 +17,8 @@ export default function StationNode({ brief, index, isSelected, station, x, y, o
 
       <span className="station-tooltip" role="tooltip">
         <strong>{station}</strong>
-        <span>승차 {formatPassengerCount(outboundTotal)}</span>
-        <span>하차 {formatPassengerCount(inboundTotal)}</span>
+        <span>Boarding {formatPassengerCount(outboundTotal)}</span>
+        <span>Alighting {formatPassengerCount(inboundTotal)}</span>
       </span>
     </button>
   );
