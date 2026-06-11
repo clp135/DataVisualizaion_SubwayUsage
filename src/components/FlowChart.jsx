@@ -75,18 +75,22 @@ export default function FlowChart({
             return (
               <div className={`bar-column ${isSelected ? 'is-selected' : ''}`} key={item.hour}>
                 <div className="bar-value">{isSelected ? formatPassengerCount(total) : ''}</div>
-                <div className="bar-stack" title={`${item.hour}시 · ${formatPassengerCount(total)}`}>
+                <div className="bar-stack" title={`${formatPassengerCount(total)}`}>
                   {mode === 'stacked' ? (
                     STACK_KEYS.map((stack) => (
-                      <span
-                        key={stack.key}
-                        style={{
-                          height: `${(item[stack.key] / maxValue) * 100}%`,
-                          background: stack.color,
-                        }}
-                      />
+                      item[stack.key] === 0 ? null :
+                      (
+                        <span
+                          key={stack.key}
+                          style={{
+                            height: `${(item[stack.key] / maxValue) * 100}%`,
+                            background: stack.color,
+                          }}
+                        />
+                      )
                     ))
                   ) : (
+                    item.total === 0 ? null :
                     <span
                       style={{
                         height: `${(item.total / maxValue) * 100}%`,
