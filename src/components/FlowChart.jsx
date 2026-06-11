@@ -2,8 +2,8 @@ import { formatPassengerCount } from '../utils/flowUtils.js';
 
 const STACK_KEYS = [
   { key: 'direct', color: '#1d8f58' },
-  { key: 'beforeToDestination', color: '#4f8cc9' },
-  { key: 'originToAfter', color: '#d17b31' },
+  { key: 'beforeToDestination', color: '#d17b31' },
+  { key: 'originToAfter', color: '#4f8cc9' },
 ];
 
 function getMaxValue(mode, series) {
@@ -75,9 +75,12 @@ export default function FlowChart({
             return (
               <div className={`bar-column ${isSelected ? 'is-selected' : ''}`} key={item.hour}>
                 <div className="bar-value">{isSelected ? formatPassengerCount(total) : ''}</div>
-                <div className="bar-stack" title={`${formatPassengerCount(total)}`}>
+                <div className="bar-stack" title={`Total: ${formatPassengerCount(total)}\n` +
+                  `• Direct: ${formatPassengerCount(item.direct)}\n` +
+                  `• Before Origin: ${formatPassengerCount(item.beforeToDestination)}\n` +
+                  `• After Destination: ${formatPassengerCount(item.originToAfter)}`}>
                   {mode === 'stacked' ? (
-                    STACK_KEYS.map((stack) => (
+                    STACK_KEYS.toReversed().map((stack) => (
                       item[stack.key] === 0 ? null :
                       (
                         <span
